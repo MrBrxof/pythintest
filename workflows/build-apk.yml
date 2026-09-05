@@ -1,0 +1,31 @@
+name: Build APK with ApkPy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # позволяет запускать вручную из вкладки Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ApkPy
+        run: pip install apkpy
+
+      - name: Build APK
+        run: apkpy run
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-apk
+          path: ./*.apk
